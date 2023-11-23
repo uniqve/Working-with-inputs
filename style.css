@@ -89,9 +89,7 @@ button {
 .text-input {
   display: block;
 }
-.hide {
-  display: none;
-}
+
 .block__number-input {
   width: 200px;
   display: flex;
@@ -108,3 +106,9 @@ button {
   display: block;
   width: auto;
 }
+.hidden{
+    display: block;
+}
+.hide {
+    display: none;
+  }

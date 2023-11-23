@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const wrappepMain = document.querySelector(".wrapper");
   const numberInput = document.querySelector(".number-input");
   const removeNumberButton = document.querySelector(".remove-nth-block");
+  const hiddenInput = document.querySelector(".hidden");
 
   buttonLog.addEventListener("click", () => {
     console.log(textInput.value);
@@ -19,19 +20,25 @@ document.addEventListener("DOMContentLoaded", function () {
     textInput.value = "";
   });
 
-  blockButton.addEventListener("click", blockMyInput);
-
-  function blockMyInput() {
+  blockButton.addEventListener("click", () => {
+    textInput.disabled = !textInput.disabled;
     if (textInput.disabled) {
-      textInput.disabled = false;
+      blockButton.textContent = "Unblock Input";
     } else {
-      textInput.disabled = true;
+      blockButton.textContent = "Block Input";
     }
-  }
-
-  hideButton.addEventListener("click", () => {
-    textInput.classList.toggle("hide");
   });
+
+    
+  hideButton.addEventListener("click", () => {
+    hiddenInput.classList.toggle("hide");
+    if (hideButton.textContent === "Hide Input") {
+      hideButton.textContent = "Show Input";
+    } else {
+      hideButton.textContent = "Hide Input";
+    }
+  });
+    
 
   randomColor.addEventListener("click", () => {
     const colors = ["red", "green", "black", "blue"];
@@ -40,29 +47,47 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   createButton.addEventListener("click", () => {
-    let newContainer = document.createElement("div");
-    newContainer.textContent = textInput.value;
-    newContainer.classList.add("new-block");
+    if (textInput.value.trim() !== "") {
+      let newContainer = document.createElement("div");
+      newContainer.textContent = textInput.value;
+      newContainer.classList.add("new-block");
 
-    wrappepMain.appendChild(newContainer);
-    textInput.value = "";
+      wrappepMain.appendChild(newContainer);
+      textInput.value = "";
+    }
   });
 
-  removeButton.addEventListener("click", () => {
-    const newBlocksCollection = document.getElementsByClassName("new-block");
-    const blockArray = Array.from(newBlocksCollection);
+  let blockDeleteNow = true; 
+
+removeButton.addEventListener("click", () => {
+  const newBlocksCollection = document.getElementsByClassName("new-block");
+  const blockArray = Array.from(newBlocksCollection);
+
+  if (blockArray.length > 0) {
     const findRemoveBlock = blockArray.pop();
     findRemoveBlock.remove();
-  });
-
-  removeNumberButton.addEventListener("click", () => {
+  } else if (blockDeleteNow ) {
+    console.log("Извините, но у вас больше нет созданных блоков");
+    blockDeleteNow = false; 
+  }
+});
+    
+    
+removeNumberButton.addEventListener("click", () => {
     const blockIndex = parseInt(numberInput.value - 1);
     const newBlocksCollection = document.getElementsByClassName("new-block");
     const blockArray = Array.from(newBlocksCollection);
-
-    if (numberInput.value > 0) {
+    if (blockArray.length > 0 && blockIndex >= 0 && blockIndex < blockArray.length) {
       const deleteBlock = blockArray[blockIndex];
       deleteBlock.remove();
+    } else {
+      console.log("Извините, но у вас больше нет созданных блоков");
     }
   });
 });
+    
+    
+    
+    
+
+
